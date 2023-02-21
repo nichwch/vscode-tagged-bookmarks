@@ -14,12 +14,37 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gestalt-explorer",
+          "title": "Gestalt",
+          "icon": "media/test.svg"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "gestalt.helloWorld",
-        "title": "Hello World"
+        "title": "Hello World Gestalt"
       }
-    ]
+    ],
+    "views": {
+      "gestalt-explorer": [
+        {
+          "id": "gestaltExplorer",
+          "name": "GestaltView",
+          "visibility": "visible",
+          "contents": "Empty for now."
+        },
+        {
+          "id": "gestaltExplorer2",
+          "name": "GestaltView2",
+          "visibility": "visible",
+          "contents": "Empty for now."
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
