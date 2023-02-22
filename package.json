@@ -25,8 +25,8 @@
     },
     "commands": [
       {
-        "command": "gestalt.helloWorld",
-        "title": "Hello World Gestalt"
+        "command": "gestalt.addBookmark",
+        "title": "Add bookmark"
       }
     ],
     "views": {
@@ -35,16 +35,22 @@
           "id": "gestaltExplorer",
           "name": "GestaltView",
           "visibility": "visible",
-          "contents": "Empty for now."
+          "contents": "\n[Add Dependency](command:nodeDependencies.addEntry)"
         },
         {
           "id": "gestaltExplorer2",
           "name": "GestaltView2",
           "visibility": "visible",
-          "contents": "Empty for now."
+          "contents": "\n[Add Dependency](command:nodeDependencies.addEntry)"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "gestaltExplorer",
+        "contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

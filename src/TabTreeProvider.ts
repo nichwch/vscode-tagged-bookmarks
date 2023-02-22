@@ -1,24 +1,47 @@
 import * as vscode from "vscode";
+import { Bookmark } from "./bookmarkStateManager";
 
-export class TabTreeProvider implements vscode.TreeDataProvider<Space> {
-  constructor(private workspaceRoot: string) {}
+export class TabTreeProvider implements vscode.TreeDataProvider<Bookmark> {
+  private bookmarks: Bookmark[] = [];
+  private onDidChangeTreeDataEmitter = new vscode.EventEmitter<
+    Bookmark | undefined
+  >();
+  // readonly onDidChangeTreeData = this.onDidChangeTreeDataEmitter.event;
 
-  getTreeItem(element: Space): vscode.TreeItem {
-    return element;
+  constructor(bookmarks: Bookmark[]) {
+    this.bookmarks = bookmarks;
   }
 
-  getChildren(element?: Space): Thenable<Space[]> {
-    return Promise.resolve([]);
+  getTreeItem(bookmark: Bookmark): vscode.TreeItem {
+    const tagsText =
+      bookmark.tags.length > 0 ? `(${bookmark.tags.join(", ")})` : "";
+    const label = `${bookmark.fileName}:${bookmark.lineNumber + 1} ${tagsText}`;
+    const treeItem = new vscode.TreeItem(
+      label,
+      vscode.TreeItemCollapsibleState.None
+    );
+    treeItem.contextValue = "bookmark";
+    treeItem.tooltip = label;
+    return treeItem;
+  }
+
+  getChildren(element: Bookmark): Thenable<Bookmark[]> {
+    if (element) {
+      return Promise.resolve([]);
+    }
+    return Promise.resolve(this.bookmarks);
+  }
+
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    Bookmark | undefined | null | void
+  > = new vscode.EventEmitter<Bookmark | undefined | null | void>();
+
+  readonly onDidChangeTreeData: vscode.Event<
+    Bookmark | undefined | null | void
+  > = this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
   }
 }
-
-class Space extends vscode.TreeItem {
-  constructor(
-    public readonly label: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState
-  ) {
-    super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
-    this.description = "hello world";
-  }
-}
+// TODO:
