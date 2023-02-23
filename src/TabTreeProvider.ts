@@ -1,21 +1,16 @@
 import * as vscode from "vscode";
 import { Bookmark } from "./bookmarkStateManager";
 
-export class TabTreeProvider implements vscode.TreeDataProvider<Bookmark> {
+export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
   private bookmarks: Bookmark[] = [];
-  private onDidChangeTreeDataEmitter = new vscode.EventEmitter<
-    Bookmark | undefined
-  >();
-  // readonly onDidChangeTreeData = this.onDidChangeTreeDataEmitter.event;
 
   constructor(bookmarks: Bookmark[]) {
     this.bookmarks = bookmarks;
   }
 
-  getTreeItem(bookmark: Bookmark): vscode.TreeItem {
-    const tagsText =
-      bookmark.tags.length > 0 ? `(${bookmark.tags.join(", ")})` : "";
-    const label = `${bookmark.fileName}:${bookmark.lineNumber + 1} ${tagsText}`;
+  getTreeItem(tag: string): vscode.TreeItem {
+    const tagsText = tag;
+    const label = tag;
     const treeItem = new vscode.TreeItem(
       label,
       vscode.TreeItemCollapsibleState.None
@@ -25,20 +20,25 @@ export class TabTreeProvider implements vscode.TreeDataProvider<Bookmark> {
     return treeItem;
   }
 
-  getChildren(element: Bookmark): Thenable<Bookmark[]> {
+  getChildren(element: string): Thenable<string[]> {
     if (element) {
       return Promise.resolve([]);
     }
-    return Promise.resolve(this.bookmarks);
+    // get all unique tags from bookmarks
+    const tagSet = new Set<string>();
+    this.bookmarks.forEach((bm) => {
+      bm.tags.forEach((tag) => tagSet.add(tag));
+    });
+    const tags = Array.from(tagSet);
+    return Promise.resolve(tags);
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
-    Bookmark | undefined | null | void
-  > = new vscode.EventEmitter<Bookmark | undefined | null | void>();
+    string | undefined | null | void
+  > = new vscode.EventEmitter<string | undefined | null | void>();
 
-  readonly onDidChangeTreeData: vscode.Event<
-    Bookmark | undefined | null | void
-  > = this._onDidChangeTreeData.event;
+  readonly onDidChangeTreeData: vscode.Event<string | undefined | null | void> =
+    this._onDidChangeTreeData.event;
 
   refresh(): void {
     this._onDidChangeTreeData.fire();

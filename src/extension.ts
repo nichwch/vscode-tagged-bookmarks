@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { addBookmark, Bookmark, BOOKMARKS } from "./bookmarkStateManager";
-import { TabTreeProvider } from "./TabTreeProvider";
+import { TagDisplayProvider } from "./TabTreeProvider";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -14,16 +14,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
-  context.workspaceState.update(BOOKMARKS, []);
+  // context.workspaceState.update(BOOKMARKS, []);
   const bookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS)!;
 
-  const topViewDataProvider = new TabTreeProvider(bookmarks);
+  const topViewDataProvider = new TagDisplayProvider(bookmarks);
   const topView = vscode.window.createTreeView("gestaltExplorer", {
     treeDataProvider: topViewDataProvider,
   });
-  // const bottomView = vscode.window.createTreeView("gestaltExplorer", {
-  //   treeDataProvider: new TabTreeProvider(bookmarks),
-  // });
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
@@ -36,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
         (await vscode.window.showInputBox({
           prompt: "enter a list of tags separated by commas",
         })) || "";
-      const tags = tagsInput.split(",");
+      const tags = tagsInput.trim().split(" ");
       const lineNumber =
         (vscode.window.activeTextEditor?.selection?.active?.line || 0) + 1;
       const fileName = vscode.window.activeTextEditor?.document.fileName!;
