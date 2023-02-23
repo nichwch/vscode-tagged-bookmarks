@@ -40,14 +40,14 @@
     "views": {
       "gestalt-explorer": [
         {
-          "id": "gestaltExplorer",
-          "name": "GestaltView",
+          "id": "gestaltExplorerTop",
+          "name": "Tags",
           "visibility": "visible",
           "contents": "\n[Add Dependency](command:nodeDependencies.addEntry)"
         },
         {
-          "id": "gestaltExplorer2",
-          "name": "GestaltView2",
+          "id": "gestaltExplorerBottom",
+          "name": "Bookmarks",
           "visibility": "visible",
           "contents": "\n[Add Dependency](command:nodeDependencies.addEntry)"
         }

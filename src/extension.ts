@@ -1,7 +1,13 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { addBookmark, Bookmark, BOOKMARKS } from "./bookmarkStateManager";
+import {
+  addBookmark,
+  Bookmark,
+  BOOKMARKS,
+  CURRENT_TAG,
+} from "./bookmarkStateManager";
+import { BookmarkTreeProvider } from "./BookmarkTreeProvider";
 import { TagDisplayProvider } from "./TabTreeProvider";
 
 // This method is called when your extension is activated
@@ -14,12 +20,18 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
-  // context.workspaceState.update(BOOKMARKS, []);
+  context.workspaceState.update(CURRENT_TAG, "t5");
 
   const topViewDataProvider = new TagDisplayProvider(context);
+  const bottomViewDataProvider = new BookmarkTreeProvider(context);
   vscode.window.registerTreeDataProvider(
-    "gestaltExplorer",
+    "gestaltExplorerTop",
     topViewDataProvider
+  );
+
+  vscode.window.registerTreeDataProvider(
+    "gestaltExplorerBottom",
+    bottomViewDataProvider
   );
 
   // The command has been defined in the package.json file

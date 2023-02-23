@@ -6,6 +6,7 @@ export interface Bookmark {
 }
 
 export const BOOKMARKS = "bookmarks";
+export const CURRENT_TAG = "current_tag";
 
 // this upserts bookmarks into the array
 export const addBookmark = (
