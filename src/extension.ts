@@ -15,12 +15,12 @@ export function activate(context: vscode.ExtensionContext) {
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
   // context.workspaceState.update(BOOKMARKS, []);
-  const bookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS)!;
 
-  const topViewDataProvider = new TagDisplayProvider(bookmarks);
-  const topView = vscode.window.createTreeView("gestaltExplorer", {
-    treeDataProvider: topViewDataProvider,
-  });
+  const topViewDataProvider = new TagDisplayProvider(context);
+  vscode.window.registerTreeDataProvider(
+    "gestaltExplorer",
+    topViewDataProvider
+  );
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
@@ -41,6 +41,10 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage("Add bookmark to gestalt!");
       topViewDataProvider.refresh();
     }
+  );
+
+  vscode.commands.registerCommand("gestalt.refreshEntry", () =>
+    topViewDataProvider.refresh()
   );
 
   context.subscriptions.push(addBookmarkCommand);

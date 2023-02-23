@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
-import { Bookmark } from "./bookmarkStateManager";
+import { Bookmark, BOOKMARKS } from "./bookmarkStateManager";
 
 export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
   private bookmarks: Bookmark[] = [];
+  private context: vscode.ExtensionContext;
 
-  constructor(bookmarks: Bookmark[]) {
+  constructor(context: vscode.ExtensionContext) {
+    const bookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS)!;
     this.bookmarks = bookmarks;
+    this.context = context;
   }
 
   getTreeItem(tag: string): vscode.TreeItem {
@@ -42,6 +45,7 @@ export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
+    const bookmarks: Bookmark[] = this.context.workspaceState.get(BOOKMARKS)!;
+    this.bookmarks = bookmarks;
   }
 }
-// TODO:

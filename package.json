@@ -27,6 +27,14 @@
       {
         "command": "gestalt.addBookmark",
         "title": "Add bookmark"
+      },
+      {
+        "command": "gestalt.refreshEntry",
+        "title": "RefreshEntry",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
       }
     ],
     "views": {
