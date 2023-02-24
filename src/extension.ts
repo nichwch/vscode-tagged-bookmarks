@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
     async () => {
       const tagsInput =
         (await vscode.window.showInputBox({
-          prompt: "enter a list of tags separated by commas",
+          prompt: "enter a list of tags, separated by spaces",
         })) || "";
       const tags = tagsInput.trim().split(" ");
       const lineNumber =
@@ -58,13 +58,28 @@ export function activate(context: vscode.ExtensionContext) {
 
   let toggleTagCommand = vscode.commands.registerCommand(
     "gestalt.toggleTag",
-    async (tag: string) => {
+    (tag: string) => {
       context.workspaceState.update(CURRENT_TAG, tag);
       bottomViewDataProvider.refresh();
     }
   );
 
-  context.subscriptions.push(addBookmarkCommand, toggleTagCommand);
+  let openBookmarkCommand = vscode.commands.registerCommand(
+    "gestalt.openBookmark",
+    async (fileName: string, lineNumber: number) => {
+      const doc = await vscode.workspace.openTextDocument(fileName);
+      const editor = await vscode.window.showTextDocument(doc);
+      const range = editor.document.lineAt(lineNumber - 1).range;
+      editor.selection = new vscode.Selection(range.start, range.end);
+      editor.revealRange(range);
+    }
+  );
+
+  context.subscriptions.push(
+    addBookmarkCommand,
+    toggleTagCommand,
+    openBookmarkCommand
+  );
 }
 
 // This method is called when your extension is deactivated

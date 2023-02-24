@@ -39,6 +39,10 @@
       {
         "command": "gestalt.toggleTag",
         "title": "Toggle tag"
+      },
+      {
+        "command": "gestalt.openBookmark",
+        "title": "Open bookmark"
       }
     ],
     "views": {
