@@ -20,6 +20,11 @@ export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
     );
     treeItem.contextValue = "bookmark";
     treeItem.tooltip = label;
+    treeItem.command = {
+      title: "Toggle Tag",
+      command: "gestalt.toggleTag",
+      arguments: [tag],
+    };
     return treeItem;
   }
 

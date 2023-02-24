@@ -35,6 +35,10 @@
           "light": "resources/light/refresh.svg",
           "dark": "resources/dark/refresh.svg"
         }
+      },
+      {
+        "command": "gestalt.toggleTag",
+        "title": "Toggle tag"
       }
     ],
     "views": {

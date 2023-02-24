@@ -52,14 +52,19 @@ export function activate(context: vscode.ExtensionContext) {
       addBookmark(context, { tags, fileName, lineNumber });
       vscode.window.showInformationMessage("Add bookmark to gestalt!");
       topViewDataProvider.refresh();
+      bottomViewDataProvider.refresh();
     }
   );
 
-  vscode.commands.registerCommand("gestalt.refreshEntry", () =>
-    topViewDataProvider.refresh()
+  let toggleTagCommand = vscode.commands.registerCommand(
+    "gestalt.toggleTag",
+    async (tag: string) => {
+      context.workspaceState.update(CURRENT_TAG, tag);
+      bottomViewDataProvider.refresh();
+    }
   );
 
-  context.subscriptions.push(addBookmarkCommand);
+  context.subscriptions.push(addBookmarkCommand, toggleTagCommand);
 }
 
 // This method is called when your extension is deactivated
