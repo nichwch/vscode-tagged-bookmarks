@@ -80,6 +80,39 @@ export function activate(context: vscode.ExtensionContext) {
     toggleTagCommand,
     openBookmarkCommand
   );
+
+  // decorations
+  refreshEditorDecorators(context);
+}
+
+export function refreshEditorDecorators(context: vscode.ExtensionContext) {
+  let allBookmarks = context.workspaceState.get<Bookmark[]>(BOOKMARKS) || [];
+  const openEditors = vscode.window.visibleTextEditors;
+
+  const bookmarkDecorationType = vscode.window.createTextEditorDecorationType({
+    gutterIconPath: context.asAbsolutePath("media/test.svg"),
+    gutterIconSize: "contain",
+  });
+
+  let fileToBookmarkMap = new Map<string, Bookmark[]>();
+  allBookmarks.forEach((bookmark) => {
+    const existingBookmarks = fileToBookmarkMap.get(bookmark.fileName) || [];
+    fileToBookmarkMap.set(bookmark.fileName, [...existingBookmarks, bookmark]);
+  });
+
+  openEditors.forEach((editor) => {
+    const bookmarks = fileToBookmarkMap.get(editor.document.fileName) || [];
+    const decorationsArray = bookmarks.map((bookmark) => {
+      const range = new vscode.Range(
+        new vscode.Position(bookmark.lineNumber - 1, 0),
+        new vscode.Position(bookmark.lineNumber - 1, 0)
+      );
+
+      return { range };
+    });
+
+    editor.setDecorations(bookmarkDecorationType, decorationsArray);
+  });
 }
 
 // This method is called when your extension is deactivated
