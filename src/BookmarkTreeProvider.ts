@@ -14,13 +14,15 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
 
   getTreeItem(bookmark: Bookmark): vscode.TreeItem {
     const tagsText = bookmark;
-    const label = `${bookmark.fileName}:${bookmark.lineNumber}`;
+    const fileNameWithoutPath = bookmark.fileName.split("/").pop();
+    const label = `${fileNameWithoutPath}:${bookmark.lineNumber}`;
     const treeItem = new vscode.TreeItem(
       label,
       vscode.TreeItemCollapsibleState.None
     );
     treeItem.contextValue = "bookmark";
     treeItem.tooltip = label;
+
     treeItem.command = {
       title: "Toggle Tag",
       command: "gestalt.openBookmark",
