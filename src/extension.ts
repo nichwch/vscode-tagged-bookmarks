@@ -83,6 +83,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   // decorations
   refreshEditorDecorators(context);
+
+  // refresh decorations when the active editor changes
+  vscode.window.onDidChangeActiveTextEditor(() => {
+    refreshEditorDecorators(context);
+  });
 }
 
 export function refreshEditorDecorators(context: vscode.ExtensionContext) {
@@ -90,7 +95,7 @@ export function refreshEditorDecorators(context: vscode.ExtensionContext) {
   const openEditors = vscode.window.visibleTextEditors;
 
   const bookmarkDecorationType = vscode.window.createTextEditorDecorationType({
-    gutterIconPath: context.asAbsolutePath("media/test.svg"),
+    gutterIconPath: context.asAbsolutePath("media/bookmark.svg"),
     gutterIconSize: "contain",
   });
 
@@ -107,8 +112,11 @@ export function refreshEditorDecorators(context: vscode.ExtensionContext) {
         new vscode.Position(bookmark.lineNumber - 1, 0),
         new vscode.Position(bookmark.lineNumber - 1, 0)
       );
-
-      return { range };
+      const decorationOptions: vscode.DecorationOptions = {
+        range,
+        hoverMessage: "lol",
+      };
+      return decorationOptions;
     });
 
     editor.setDecorations(bookmarkDecorationType, decorationsArray);

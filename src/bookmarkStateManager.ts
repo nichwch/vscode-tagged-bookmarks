@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { refreshEditorDecorators } from "./extension";
 export interface Bookmark {
   tags: string[];
   fileName: string;
@@ -32,6 +33,7 @@ export const addBookmark = (
       newBookmark,
     ]);
   }
+  refreshEditorDecorators(context);
 };
 
 export const removeBookmark = (
@@ -47,4 +49,5 @@ export const removeBookmark = (
   });
   newBookmarks.splice(index, 1);
   context.workspaceState.update(BOOKMARKS, newBookmarks);
+  refreshEditorDecorators(context);
 };
