@@ -45,7 +45,14 @@ export function activate(context: vscode.ExtensionContext) {
       if (!tagsInput) {
         return;
       }
-      const tags = tagsInput.trim().split(" ");
+      const trimmedInput = tagsInput.trim();
+      if (trimmedInput.length === 0) {
+        return;
+      }
+      const tags = trimmedInput.split(" ");
+      if (tags.length === 0) {
+        return;
+      }
       const lineNumber =
         (vscode.window.activeTextEditor?.selection?.active?.line || 0) + 1;
       const fileName = vscode.window.activeTextEditor?.document.fileName!;
