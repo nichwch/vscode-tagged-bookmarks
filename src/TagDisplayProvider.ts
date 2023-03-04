@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { Bookmark, BOOKMARKS } from "./bookmarkStateManager";
 
+const SHOW_ALL_BOOKMARKS = "show all bookmarks";
 export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
   private bookmarks: Bookmark[] = [];
   private context: vscode.ExtensionContext;
@@ -20,11 +21,20 @@ export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
     );
     treeItem.contextValue = "bookmark";
     treeItem.tooltip = label;
-    treeItem.command = {
-      title: "Toggle Tag",
-      command: "gestalt.toggleTag",
-      arguments: [tag],
-    };
+    if (tag === SHOW_ALL_BOOKMARKS) {
+      treeItem.command = {
+        title: "Toggle Tag",
+        command: "gestalt.toggleTag",
+        arguments: [null],
+      };
+    } else {
+      treeItem.command = {
+        title: "Toggle Tag",
+        command: "gestalt.toggleTag",
+        arguments: [tag],
+      };
+    }
+
     return treeItem;
   }
 
@@ -38,7 +48,7 @@ export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
       bm.tags.forEach((tag) => tagSet.add(tag));
     });
     const tags = Array.from(tagSet);
-    return Promise.resolve(tags);
+    return Promise.resolve([SHOW_ALL_BOOKMARKS, ...tags]);
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<

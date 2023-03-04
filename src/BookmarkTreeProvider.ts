@@ -7,9 +7,7 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     const focusedTag = context.workspaceState.get(CURRENT_TAG) as string;
-    if (focusedTag) {
-      this.bookmarks = this.getBookmarksForTag(focusedTag);
-    }
+    this.bookmarks = this.getBookmarksForTag(focusedTag);
   }
 
   getTreeItem(bookmark: Bookmark): vscode.TreeItem {
@@ -46,6 +44,9 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
     const allBookmarks: Bookmark[] =
       this.context.workspaceState.get(BOOKMARKS)!;
 
+    if (tag === null) {
+      return allBookmarks;
+    }
     const bookmarksWithTags = allBookmarks.filter((bm) => {
       return bm.tags.includes(tag);
     });
@@ -55,8 +56,6 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
   refresh(): void {
     this._onDidChangeTreeData.fire();
     const focusedTag = this.context.workspaceState.get(CURRENT_TAG) as string;
-    if (focusedTag) {
-      this.bookmarks = this.getBookmarksForTag(focusedTag);
-    }
+    this.bookmarks = this.getBookmarksForTag(focusedTag);
   }
 }

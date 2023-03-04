@@ -9,21 +9,16 @@ import {
   removeBookmark,
 } from "./bookmarkStateManager";
 import { BookmarkTreeProvider } from "./BookmarkTreeProvider";
-import { TagDisplayProvider } from "./TabTreeProvider";
+import { TagDisplayProvider } from "./TagDisplayProvider";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
 let bookmarkDecorationType: vscode.TextEditorDecorationType;
 export function activate(context: vscode.ExtensionContext) {
-  // register all commands
-
-  const rootPath =
-    vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
-      ? vscode.workspace.workspaceFolders[0].uri.fsPath
-      : undefined;
-  context.workspaceState.update(BOOKMARKS, []);
+  // this line clears all bookmarks
+  // useful for debuggin
+  // context.workspaceState.update(BOOKMARKS, []);
 
   const topViewDataProvider = new TagDisplayProvider(context);
   const bottomViewDataProvider = new BookmarkTreeProvider(context);
@@ -44,10 +39,12 @@ export function activate(context: vscode.ExtensionContext) {
   let addBookmarkCommand = vscode.commands.registerCommand(
     "gestalt.addBookmark",
     async () => {
-      const tagsInput =
-        (await vscode.window.showInputBox({
-          prompt: "enter a list of tags, separated by spaces",
-        })) || "";
+      const tagsInput = await vscode.window.showInputBox({
+        prompt: "enter a list of tags, separated by spaces",
+      });
+      if (!tagsInput) {
+        return;
+      }
       const tags = tagsInput.trim().split(" ");
       const lineNumber =
         (vscode.window.activeTextEditor?.selection?.active?.line || 0) + 1;
