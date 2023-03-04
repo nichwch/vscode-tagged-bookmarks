@@ -13,6 +13,8 @@ import { TagDisplayProvider } from "./TabTreeProvider";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
+
+let bookmarkDecorationType: vscode.TextEditorDecorationType;
 export function activate(context: vscode.ExtensionContext) {
   // register all commands
 
@@ -86,12 +88,26 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  // let testCommnand = vscode.commands.registerCommand(
+  //   "gestalt.test",
+  //   async ( ) => {
+  //     const openEditors = vscode.window.visibleTextEditors;
+  //     editor.setDecorations(bookmarkDecorationType, []);
+
+  //   }
+  // );
+
   context.subscriptions.push(
     addBookmarkCommand,
     toggleTagCommand,
     openBookmarkCommand,
     deleteBookmarkCommand
   );
+
+  bookmarkDecorationType = vscode.window.createTextEditorDecorationType({
+    gutterIconPath: context.asAbsolutePath("media/bookmark.svg"),
+    gutterIconSize: "contain",
+  });
 
   // decorations
   refreshEditorDecorators(context);
@@ -105,11 +121,6 @@ export function activate(context: vscode.ExtensionContext) {
 export function refreshEditorDecorators(context: vscode.ExtensionContext) {
   let allBookmarks = context.workspaceState.get<Bookmark[]>(BOOKMARKS) || [];
   const openEditors = vscode.window.visibleTextEditors;
-
-  const bookmarkDecorationType = vscode.window.createTextEditorDecorationType({
-    gutterIconPath: context.asAbsolutePath("media/bookmark.svg"),
-    gutterIconSize: "contain",
-  });
 
   let fileToBookmarkMap = new Map<string, Bookmark[]>();
   allBookmarks.forEach((bookmark) => {
