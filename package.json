@@ -29,11 +29,11 @@
         "title": "Add bookmark"
       },
       {
-        "command": "gestalt.refreshEntry",
-        "title": "RefreshEntry",
+        "command": "gestalt.deleteBookmark",
+        "title": "Delete bookmark",
         "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
+          "light": "media/trash_light.svg",
+          "dark": "media/trash_dark.svg"
         }
       },
       {
@@ -50,14 +50,12 @@
         {
           "id": "gestaltExplorerTop",
           "name": "Tags",
-          "visibility": "visible",
-          "contents": "\n[Add Dependency](command:nodeDependencies.addEntry)"
+          "visibility": "visible"
         },
         {
           "id": "gestaltExplorerBottom",
           "name": "Bookmarks",
-          "visibility": "visible",
-          "contents": "\n[Add Dependency](command:nodeDependencies.addEntry)"
+          "visibility": "visible"
         }
       ]
     },
@@ -65,6 +63,23 @@
       {
         "view": "gestaltExplorer",
         "contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "gestalt.deleteBookmark",
+          "when": "view == gestaltExplorerBottom",
+          "group": "inline"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "gestalt.addBookmark",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k",
+        "when": "editorTextFocus"
       }
     ]
   },

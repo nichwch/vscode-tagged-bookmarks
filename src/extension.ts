@@ -6,6 +6,7 @@ import {
   Bookmark,
   BOOKMARKS,
   CURRENT_TAG,
+  removeBookmark,
 } from "./bookmarkStateManager";
 import { BookmarkTreeProvider } from "./BookmarkTreeProvider";
 import { TagDisplayProvider } from "./TabTreeProvider";
@@ -20,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
-  context.workspaceState.update(CURRENT_TAG, "t5");
+  context.workspaceState.update(BOOKMARKS, []);
 
   const topViewDataProvider = new TagDisplayProvider(context);
   const bottomViewDataProvider = new BookmarkTreeProvider(context);
@@ -75,10 +76,21 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  let deleteBookmarkCommand = vscode.commands.registerCommand(
+    "gestalt.deleteBookmark",
+    async (node: Bookmark) => {
+      const { fileName, lineNumber } = node;
+      removeBookmark(context, { fileName, lineNumber });
+      topViewDataProvider.refresh();
+      bottomViewDataProvider.refresh();
+    }
+  );
+
   context.subscriptions.push(
     addBookmarkCommand,
     toggleTagCommand,
-    openBookmarkCommand
+    openBookmarkCommand,
+    deleteBookmarkCommand
   );
 
   // decorations
@@ -104,6 +116,8 @@ export function refreshEditorDecorators(context: vscode.ExtensionContext) {
     const existingBookmarks = fileToBookmarkMap.get(bookmark.fileName) || [];
     fileToBookmarkMap.set(bookmark.fileName, [...existingBookmarks, bookmark]);
   });
+
+  // reset all editors
 
   openEditors.forEach((editor) => {
     const bookmarks = fileToBookmarkMap.get(editor.document.fileName) || [];

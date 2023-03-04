@@ -22,7 +22,6 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
     );
     treeItem.contextValue = "bookmark";
     treeItem.tooltip = label;
-
     treeItem.command = {
       title: "Toggle Tag",
       command: "gestalt.openBookmark",

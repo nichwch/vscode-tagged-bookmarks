@@ -38,7 +38,7 @@ export const addBookmark = (
 
 export const removeBookmark = (
   context: vscode.ExtensionContext,
-  bookmark: Bookmark
+  bookmark: Pick<Bookmark, "fileName" | "lineNumber">
 ) => {
   const existingBookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS)!;
   const newBookmarks = [...existingBookmarks];
