@@ -14,7 +14,8 @@ export const addBookmark = (
   context: vscode.ExtensionContext,
   newBookmark: Bookmark
 ) => {
-  const existingBookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS)!;
+  const existingBookmarks: Bookmark[] =
+    context.workspaceState.get(BOOKMARKS) || [];
 
   const index = existingBookmarks.findIndex((bm) => {
     return (

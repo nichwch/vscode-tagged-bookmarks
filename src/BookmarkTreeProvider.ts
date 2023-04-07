@@ -42,7 +42,7 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
 
   private getBookmarksForTag(tag: string): Bookmark[] {
     const allBookmarks: Bookmark[] =
-      this.context.workspaceState.get(BOOKMARKS)!;
+      this.context.workspaceState.get(BOOKMARKS) || [];
 
     if (tag === null) {
       return allBookmarks;
