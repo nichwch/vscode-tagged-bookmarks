@@ -7,7 +7,7 @@ export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
   private context: vscode.ExtensionContext;
 
   constructor(context: vscode.ExtensionContext) {
-    const bookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS)!;
+    const bookmarks: Bookmark[] = context.workspaceState.get(BOOKMARKS) || [];
     this.bookmarks = bookmarks;
     this.context = context;
   }

@@ -124,7 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function refreshEditorDecorators(context: vscode.ExtensionContext) {
   let allBookmarks = context.workspaceState.get<Bookmark[]>(BOOKMARKS) || [];
-  const openEditors = vscode.window.visibleTextEditors;
+  const openEditors = vscode.window.visibleTextEditors || [];
 
   let fileToBookmarkMap = new Map<string, Bookmark[]>();
   allBookmarks.forEach((bookmark) => {
