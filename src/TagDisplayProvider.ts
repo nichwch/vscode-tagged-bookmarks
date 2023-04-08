@@ -24,13 +24,13 @@ export class TagDisplayProvider implements vscode.TreeDataProvider<string> {
     if (tag === SHOW_ALL_BOOKMARKS) {
       treeItem.command = {
         title: "Toggle Tag",
-        command: "gestalt.toggleTag",
+        command: "vscode-tagged-bookmarks.toggleTag",
         arguments: [null],
       };
     } else {
       treeItem.command = {
         title: "Toggle Tag",
-        command: "gestalt.toggleTag",
+        command: "vscode-tagged-bookmarks.toggleTag",
         arguments: [tag],
       };
     }

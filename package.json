@@ -1,6 +1,6 @@
 {
-  "name": "gestalt",
-  "displayName": "gestalt",
+  "name": "vscode-tagged-bookmarks",
+  "displayName": "vscode-tagged-bookmarks",
   "description": "A way to bookmark locations in code",
   "version": "0.0.1",
   "engines": {
@@ -10,26 +10,26 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:gestalt.helloWorld"
+    "onCommand:vscode-tagged-bookmarks.helloWorld"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "gestalt-explorer",
-          "title": "Gestalt",
+          "id": "vscode-tagged-bookmarks-explorer",
+          "title": "vscode-tagged-bookmarks",
           "icon": "media/test.svg"
         }
       ]
     },
     "commands": [
       {
-        "command": "gestalt.addBookmark",
+        "command": "vscode-tagged-bookmarks.addBookmark",
         "title": "Add bookmark"
       },
       {
-        "command": "gestalt.deleteBookmark",
+        "command": "vscode-tagged-bookmarks.deleteBookmark",
         "title": "Delete bookmark",
         "icon": {
           "light": "media/trash_light.svg",
@@ -37,23 +37,23 @@
         }
       },
       {
-        "command": "gestalt.toggleTag",
+        "command": "vscode-tagged-bookmarks.toggleTag",
         "title": "Toggle tag"
       },
       {
-        "command": "gestalt.openBookmark",
+        "command": "vscode-tagged-bookmarks.openBookmark",
         "title": "Open bookmark"
       }
     ],
     "views": {
-      "gestalt-explorer": [
+      "vscode-tagged-bookmarks-explorer": [
         {
-          "id": "gestaltExplorerTop",
+          "id": "vscode-tagged-bookmarksExplorerTop",
           "name": "Tags",
           "visibility": "visible"
         },
         {
-          "id": "gestaltExplorerBottom",
+          "id": "vscode-tagged-bookmarksExplorerBottom",
           "name": "Bookmarks",
           "visibility": "visible"
         }
@@ -61,22 +61,22 @@
     },
     "viewsWelcome": [
       {
-        "view": "gestaltExplorer",
+        "view": "vscode-tagged-bookmarksExplorer",
         "contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
       }
     ],
     "menus": {
       "view/item/context": [
         {
-          "command": "gestalt.deleteBookmark",
-          "when": "view == gestaltExplorerBottom",
+          "command": "vscode-tagged-bookmarks.deleteBookmark",
+          "when": "view == vscode-tagged-bookmarksExplorerBottom",
           "group": "inline"
         }
       ]
     },
     "keybindings": [
       {
-        "command": "gestalt.addBookmark",
+        "command": "vscode-tagged-bookmarks.addBookmark",
         "key": "ctrl+shift+k",
         "mac": "cmd+shift+k",
         "when": "editorTextFocus"

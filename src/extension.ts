@@ -23,12 +23,12 @@ export function activate(context: vscode.ExtensionContext) {
   const topViewDataProvider = new TagDisplayProvider(context);
   const bottomViewDataProvider = new BookmarkTreeProvider(context);
   vscode.window.registerTreeDataProvider(
-    "gestaltExplorerTop",
+    "vscode-tagged-bookmarksExplorerTop",
     topViewDataProvider
   );
 
   vscode.window.registerTreeDataProvider(
-    "gestaltExplorerBottom",
+    "vscode-tagged-bookmarksExplorerBottom",
     bottomViewDataProvider
   );
 
@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
   // The commandId parameter must match the command field in package.json
 
   let addBookmarkCommand = vscode.commands.registerCommand(
-    "gestalt.addBookmark",
+    "vscode-tagged-bookmarks.addBookmark",
     async () => {
       const tagsInput = await vscode.window.showInputBox({
         prompt: "enter a list of tags, separated by spaces",
@@ -57,14 +57,16 @@ export function activate(context: vscode.ExtensionContext) {
         (vscode.window.activeTextEditor?.selection?.active?.line || 0) + 1;
       const fileName = vscode.window.activeTextEditor?.document.fileName!;
       addBookmark(context, { tags, fileName, lineNumber });
-      vscode.window.showInformationMessage("Add bookmark to gestalt!");
+      vscode.window.showInformationMessage(
+        "Add bookmark to vscode-tagged-bookmarks!"
+      );
       topViewDataProvider.refresh();
       bottomViewDataProvider.refresh();
     }
   );
 
   let toggleTagCommand = vscode.commands.registerCommand(
-    "gestalt.toggleTag",
+    "vscode-tagged-bookmarks.toggleTag",
     (tag: string) => {
       context.workspaceState.update(CURRENT_TAG, tag);
       bottomViewDataProvider.refresh();
@@ -72,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   let openBookmarkCommand = vscode.commands.registerCommand(
-    "gestalt.openBookmark",
+    "vscode-tagged-bookmarks.openBookmark",
     async (fileName: string, lineNumber: number) => {
       const doc = await vscode.workspace.openTextDocument(fileName);
       const editor = await vscode.window.showTextDocument(doc);
@@ -83,7 +85,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   let deleteBookmarkCommand = vscode.commands.registerCommand(
-    "gestalt.deleteBookmark",
+    "vscode-tagged-bookmarks.deleteBookmark",
     async (node: Bookmark) => {
       const { fileName, lineNumber } = node;
       removeBookmark(context, { fileName, lineNumber });
@@ -93,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // let testCommnand = vscode.commands.registerCommand(
-  //   "gestalt.test",
+  //   "vscode-tagged-bookmarks.test",
   //   async ( ) => {
   //     const openEditors = vscode.window.visibleTextEditors;
   //     editor.setDecorations(bookmarkDecorationType, []);

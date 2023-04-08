@@ -22,7 +22,7 @@ export class BookmarkTreeProvider implements vscode.TreeDataProvider<Bookmark> {
     treeItem.tooltip = label;
     treeItem.command = {
       title: "Toggle Tag",
-      command: "gestalt.openBookmark",
+      command: "vscode-tagged-bookmarks.openBookmark",
       arguments: [bookmark.fileName, bookmark.lineNumber],
     };
     return treeItem;
